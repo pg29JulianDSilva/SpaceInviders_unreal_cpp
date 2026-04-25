@@ -12,15 +12,37 @@ class SPACESHOOTER_API ASpaceShooterEnemySpawner : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASpaceShooterEnemySpawner();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    TSubclassOf<AActor> ObstacleClass;
 
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    float SpawnRangeX = 500.f;
+
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    float SpawnRangeY = 500.f;
+
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    float SpawnHeight = 800.f;
+
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    float InitialSpawnInterval = 1.5f;
+
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    float MinSpawnInterval = 0.3f;
+
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    float DifficultyRampTime = 60.f;
+
+private:	
+    FTimerHandle SpawnTimer;
+    float ElapsedTime = 0.f;
+
+    void SpawnObstacle();
+    void UpdateDifficulty();
 };

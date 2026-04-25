@@ -20,27 +20,34 @@ public:
 	// Sets default values for this character's properties
 	ACustomSpaceShooterCharacter();
 
-protected:
+public:	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	TObjectPtr<USpaceShooterHealthComponent> HealthComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputMappingContext> DefaultMappingContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> MoveInput;
-
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Die();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* MoveInput;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float MoveSpeed = 700.f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float ArenaHalfWidth = 480.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpaceShooterHealthComponent* HealthComponent;
+
+private:
+
 	void OnMovementInputReceived(const FInputActionValue& Value);
+
+	float FixedX = 0.f;
+	bool bIsDead = false;
 
 };

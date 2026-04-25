@@ -18,5 +18,10 @@ public:
 
 	ACustomSpaceShooterGameMode();
 
+	void OnPlayerDead();
+	bool bGameOver = false;
+
+protected:
+	virtual void BeginPlay() override;
 	
 };
