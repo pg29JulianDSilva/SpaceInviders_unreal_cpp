@@ -55,6 +55,21 @@ void ACustomSpaceShooterCharacter::BeginPlay()
 
 }
 
+void ACustomSpaceShooterCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (APlayerController* PC = Cast<APlayerController>(NewController))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+				PC->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
+}
+
 void ACustomSpaceShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
