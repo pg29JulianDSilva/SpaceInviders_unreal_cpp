@@ -27,6 +27,7 @@ ACustomSpaceShooterCharacter::ACustomSpaceShooterCharacter()
 	GetCharacterMovement()->SetPlaneConstraintNormal(FVector(0.f, 0.f, 1.f));
 	GetCharacterMovement()->GravityScale = 0.f;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -46,6 +47,7 @@ ACustomSpaceShooterCharacter::ACustomSpaceShooterCharacter()
 void ACustomSpaceShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	SetActorRotation(FRotator(0.f, 0.f, 0.f));
 	bIsDead = false;
 	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 
