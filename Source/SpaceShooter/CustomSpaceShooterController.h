@@ -14,4 +14,7 @@ class SPACESHOOTER_API ACustomSpaceShooterController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+
+	ACustomSpaceShooterController();
 };

@@ -10,6 +10,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "Components/PrimitiveComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "SpaceShooterEnemy.h"
 #include "EnhancedInputComponent.h"
 
 // Sets default values
@@ -22,13 +25,20 @@ ACustomSpaceShooterCharacter::ACustomSpaceShooterCharacter()
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 	GetCharacterMovement()->SetPlaneConstraintNormal(FVector(0.f, 0.f, 1.f));
-	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 	GetCharacterMovement()->GravityScale = 0.f;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bRequestedMoveUseAcceleration = false;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 0.f, 0.f);
+	
+	GetCharacterMovement()->MaxAcceleration = 99999.f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 99999.f;
+	GetCharacterMovement()->BrakingFrictionFactor = 0.f;
+	GetCharacterMovement()->BrakingFriction = 0.f;
 
 }
 
@@ -37,8 +47,9 @@ void ACustomSpaceShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	bIsDead = false;
+	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 
-	if (APlayerController* PC = Cast<ACustomSpaceShooterController>(GetController()))
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
 			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
@@ -50,7 +61,6 @@ void ACustomSpaceShooterCharacter::BeginPlay()
 
 	FVector StartLoc = GetActorLocation();
 	FixedX = StartLoc.X;          
-	StartLoc.Z = 0.f;
 	SetActorLocation(StartLoc);
 
 }
@@ -95,6 +105,17 @@ void ACustomSpaceShooterCharacter::Die()
 
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
+}
+
+void ACustomSpaceShooterCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && OtherActor != this)
+	{
+		if(ASpaceShooterEnemy* enemy = Cast<ASpaceShooterEnemy>(OtherActor))
+		{
+			Die();
+		}
+	}
 }
 
 

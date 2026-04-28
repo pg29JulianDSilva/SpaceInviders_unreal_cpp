@@ -3,3 +3,6 @@
 
 #include "CustomSpaceShooterController.h"
 
+ACustomSpaceShooterController::ACustomSpaceShooterController()
+{
+}
