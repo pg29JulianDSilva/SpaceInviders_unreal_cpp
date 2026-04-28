@@ -31,7 +31,7 @@ void ASpaceShooterEnemySpawner::SpawnObstacle()
 	ACustomSpaceShooterGameMode* thisGame = Cast<ACustomSpaceShooterGameMode>(UGameplayStatics::GetGameMode(this));
 	if (thisGame && thisGame->bGameOver) return;
 
-	if (ObstacleClass) return;
+	if (!ObstacleClass) return;
 
 	float RandX = FMath::FRandRange(-SpawnRangeX, SpawnRangeX);
 	float RandY = FMath::FRandRange(-SpawnRangeY, SpawnRangeY);
@@ -41,8 +41,7 @@ void ASpaceShooterEnemySpawner::SpawnObstacle()
 	Params.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	GetWorld()->SpawnActor<AActor>(ObstacleClass, SpawnLocation,
-		FRotator::ZeroRotator, Params);
+	GetWorld()->SpawnActor<ASpaceShooterEnemy>(ObstacleClass, SpawnLocation, FRotator::ZeroRotator, Params);
 
 	UpdateDifficulty();
 }

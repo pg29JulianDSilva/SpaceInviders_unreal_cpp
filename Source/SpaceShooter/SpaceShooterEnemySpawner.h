@@ -13,13 +13,13 @@ class SPACESHOOTER_API ASpaceShooterEnemySpawner : public AActor
 	
 public:	
 	ASpaceShooterEnemySpawner();
+	virtual void BeginPlay() override;
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
     UPROPERTY(EditAnywhere, Category = "Spawner")
-    TSubclassOf<AActor> ObstacleClass;
+    TSubclassOf<ASpaceShooterEnemy> ObstacleClass;
 
     UPROPERTY(EditAnywhere, Category = "Spawner")
     float SpawnRangeX = 500.f;
